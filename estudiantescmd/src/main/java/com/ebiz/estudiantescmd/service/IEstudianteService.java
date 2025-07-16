@@ -1,4 +1,4 @@
 package com.ebiz.estudiantescmd.service;
 
-public class IEstudianteRepository {
+public class IEstudianteService {
 }
