@@ -1,10 +1,10 @@
-package com.ebiz.estudiantescmd;
+package org.ebiz.msestudiantescmd;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EstudiantescmdApplicationTests {
+class MsestudiantescmdApplicationTests {
 
     @Test
     void contextLoads() {

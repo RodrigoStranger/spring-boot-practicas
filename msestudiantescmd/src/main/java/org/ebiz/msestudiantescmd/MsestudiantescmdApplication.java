@@ -1,13 +1,13 @@
-package com.ebiz.estudiantescmd;
+package org.ebiz.msestudiantescmd;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EstudiantescmdApplication {
+public class MsestudiantescmdApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EstudiantescmdApplication.class, args);
+        SpringApplication.run(MsestudiantescmdApplication.class, args);
     }
 
 }
