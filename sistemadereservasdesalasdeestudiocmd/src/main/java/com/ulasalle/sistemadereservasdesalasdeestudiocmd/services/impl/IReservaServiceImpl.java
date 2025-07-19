@@ -106,6 +106,9 @@ public class IReservaServiceImpl implements IReservaService {
     @Override
     @Transactional
     public void eliminarReserva(Long id) {
+        if (!reservaRepository.existsById(id)) {
+            throw new RuntimeException("La reserva no existe");
+        }
         reservaRepository.deleteById(id);
     }
 
