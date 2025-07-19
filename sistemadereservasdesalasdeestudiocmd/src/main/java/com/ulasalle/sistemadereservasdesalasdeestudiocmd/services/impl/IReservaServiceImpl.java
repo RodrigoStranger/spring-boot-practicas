@@ -34,6 +34,11 @@ public class IReservaServiceImpl implements IReservaService {
         Sala sala = salaRepository.findById(reservaDTO.getSalaId())
             .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
 
+        // Validación de sala habilitada
+        if (!sala.getHabilitada()) {
+            throw new RuntimeException("No se puede reservar una sala deshabilitada");
+        }
+
         // Validación de capacidad
         if (reservaDTO.getCantidadEstudiantes() > sala.getCapacidad()) {
             throw new RuntimeException("La cantidad de estudiantes excede la capacidad de la sala");
@@ -74,6 +79,11 @@ public class IReservaServiceImpl implements IReservaService {
             .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
         Sala sala = salaRepository.findById(reservaDTO.getSalaId())
             .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
+
+        // Validación de sala habilitada
+        if (!sala.getHabilitada()) {
+            throw new RuntimeException("No se puede reservar una sala deshabilitada");
+        }
 
         if (reservaDTO.getCantidadEstudiantes() > sala.getCapacidad()) {
             throw new RuntimeException("La cantidad de estudiantes excede la capacidad de la sala");
