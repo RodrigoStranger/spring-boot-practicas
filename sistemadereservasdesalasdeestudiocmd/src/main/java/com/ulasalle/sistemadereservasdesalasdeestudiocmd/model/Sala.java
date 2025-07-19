@@ -31,6 +31,7 @@ public class Sala {
     }
     
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private java.util.List<Reserva> reservas = new java.util.ArrayList<>();
 
 }
