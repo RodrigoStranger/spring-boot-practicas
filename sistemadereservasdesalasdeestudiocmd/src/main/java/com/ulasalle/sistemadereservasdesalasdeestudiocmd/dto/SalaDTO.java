@@ -16,7 +16,4 @@ public class SalaDTO {
         return habilitada;
     }
 
-    public void setHabilitada(boolean habilitada) {
-        this.habilitada = habilitada;
-    }
 }
