@@ -89,15 +89,6 @@ public class IEstudianteServiceImpl implements IEstudianteService {
         return repoEstudiante.save(estudianteExistente);
     }
 
-    @Override
-    public void eliminar(Long id) {
-        Estudiante entidadActual = repoEstudiante.findById(id).orElse(null);
-        if (entidadActual == null) {
-            throw new RuntimeException("Estudiante no encontrado");
-        }
-        entidadActual.setHabilitado(0);
-        repoEstudiante.save(entidadActual);
-    }
 
     @Override
     public void cambiarEstado(Long id, boolean habilitado) {
