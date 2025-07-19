@@ -87,10 +87,4 @@ public class EstudianteController {
         }
     }
 
-    public static class EstadoRequest {
-        private boolean habilitado;
-        public boolean isHabilitado() { return habilitado; }
-        public void setHabilitado(boolean habilitado) { this.habilitado = habilitado; }
-    }
-
 }
