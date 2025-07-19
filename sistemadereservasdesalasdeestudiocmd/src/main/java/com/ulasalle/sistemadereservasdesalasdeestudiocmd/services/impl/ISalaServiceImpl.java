@@ -5,16 +5,14 @@ import com.ulasalle.sistemadereservasdesalasdeestudiocmd.model.Sala;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.repository.ISalaJpaRepository;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.ISalaService;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ISalaServiceImpl implements ISalaService {
 
-    private final ISalaJpaRepository salaRepository;
+    private ISalaJpaRepository salaRepository;
 
-    @Autowired
     public ISalaServiceImpl(ISalaJpaRepository salaRepository) {
         this.salaRepository = salaRepository;
     }
@@ -25,7 +23,7 @@ public class ISalaServiceImpl implements ISalaService {
             throw new RuntimeException("Ya existe una sala con ese nombre");
         }
         Sala sala = dtoToEntity(salaDTO);
-        sala.setHabilitada(true); // Por defecto habilitada
+        sala.setHabilitada(true);
         Sala guardada = salaRepository.save(sala);
         return entityToDto(guardada);
     }

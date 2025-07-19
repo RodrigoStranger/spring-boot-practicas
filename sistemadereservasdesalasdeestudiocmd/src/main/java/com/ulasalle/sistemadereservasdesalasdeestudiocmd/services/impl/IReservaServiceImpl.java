@@ -8,7 +8,6 @@ import com.ulasalle.sistemadereservasdesalasdeestudiocmd.repository.IReservaJpaR
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.repository.IEstudianteJpaRepository;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.repository.ISalaJpaRepository;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.IReservaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -18,44 +17,45 @@ import java.time.LocalDate;
 @Service
 public class IReservaServiceImpl implements IReservaService {
 
-    @Autowired
     private IReservaJpaRepository reservaRepository;
-    @Autowired
     private IEstudianteJpaRepository estudianteRepository;
-    @Autowired
     private ISalaJpaRepository salaRepository;
+
+    public IReservaServiceImpl(
+        IReservaJpaRepository reservaRepository,
+        IEstudianteJpaRepository estudianteRepository,
+        ISalaJpaRepository salaRepository
+    ) {
+        this.reservaRepository = reservaRepository;
+        this.estudianteRepository = estudianteRepository;
+        this.salaRepository = salaRepository;
+    }
 
     @Override
     @Transactional
     public ReservaDTO crearReserva(ReservaDTO reservaDTO) {
-        // Validación de existencia de estudiante y sala
+
         Estudiante estudiante = estudianteRepository.findById(reservaDTO.getEstudianteId())
             .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
         Sala sala = salaRepository.findById(reservaDTO.getSalaId())
             .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
 
-        // Validación de sala habilitada
         if (!sala.getHabilitada()) {
             throw new RuntimeException("No se puede reservar una sala deshabilitada");
         }
 
-        // Validación de capacidad
         if (reservaDTO.getCantidadEstudiantes() > sala.getCapacidad()) {
             throw new RuntimeException("La cantidad de estudiantes excede la capacidad de la sala");
         }
 
-        // Validación de reserva duplicada en la misma fecha y sala
         List<Reserva> reservasEnFecha = reservaRepository.findBySalaIdAndFechaReserva(sala.getId(), reservaDTO.getFechaReserva());
         if (!reservasEnFecha.isEmpty()) {
-        // Validación de fecha pasada
-        if (reservaDTO.getFechaReserva().isBefore(LocalDate.now())) {
-            throw new RuntimeException("No se puede reservar para una fecha pasada");
-        }
-
-        // Validación de anticipo mínimo
-        if (LocalDate.now().plusDays(sala.getDiasAnticipoCancelacion()).isAfter(reservaDTO.getFechaReserva())) {
-            throw new RuntimeException("La reserva debe hacerse con el anticipo mínimo requerido por la sala");
-        }
+            if (reservaDTO.getFechaReserva().isBefore(LocalDate.now())) {
+                throw new RuntimeException("No se puede reservar para una fecha pasada");
+            }
+            if (LocalDate.now().plusDays(sala.getDiasAnticipoCancelacion()).isAfter(reservaDTO.getFechaReserva())) {
+                throw new RuntimeException("La reserva debe hacerse con el anticipo mínimo requerido por la sala");
+            }
             throw new RuntimeException("Ya existe una reserva para esta sala en la fecha indicada");
         }
 
@@ -80,7 +80,6 @@ public class IReservaServiceImpl implements IReservaService {
         Sala sala = salaRepository.findById(reservaDTO.getSalaId())
             .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
 
-        // Validación de sala habilitada
         if (!sala.getHabilitada()) {
             throw new RuntimeException("No se puede reservar una sala deshabilitada");
         }
@@ -139,7 +138,6 @@ public class IReservaServiceImpl implements IReservaService {
         return reservaRepository.findByFechaReserva(fechaReserva).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    // Conversión entre entidad y DTO
     private ReservaDTO toDTO(Reserva reserva) {
         ReservaDTO dto = new ReservaDTO();
         dto.setId(reserva.getId());
