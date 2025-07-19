@@ -34,7 +34,4 @@ public class Sala {
     public void setHabilitada(boolean habilitada) {
         this.habilitada = habilitada;
     }
-
-    @OneToMany(mappedBy = "sala")
-    private List<Reserva> reservas;
 }
