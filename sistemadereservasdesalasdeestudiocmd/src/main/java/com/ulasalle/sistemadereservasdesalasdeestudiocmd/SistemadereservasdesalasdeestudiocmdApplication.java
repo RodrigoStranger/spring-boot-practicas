@@ -8,5 +8,4 @@ public class SistemadereservasdesalasdeestudiocmdApplication {
     public static void main(String[] args) {
         SpringApplication.run(SistemadereservasdesalasdeestudiocmdApplication.class, args);
     }
-
 }
