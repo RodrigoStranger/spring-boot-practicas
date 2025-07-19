@@ -27,6 +27,14 @@ public class Sala {
     @Column(name = "habilitada_sala")
     private boolean habilitada;
 
+    public boolean getHabilitada() {
+        return habilitada;
+    }
+
+    public void setHabilitada(boolean habilitada) {
+        this.habilitada = habilitada;
+    }
+
     @OneToMany(mappedBy = "sala")
     private List<Reserva> reservas;
 }

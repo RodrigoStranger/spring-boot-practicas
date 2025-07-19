@@ -11,4 +11,12 @@ public class SalaDTO {
     private int capacidad;
     private int diasAnticipoCancelacion;
     private boolean habilitada;
+
+    public boolean getHabilitada() {
+        return habilitada;
+    }
+
+    public void setHabilitada(boolean habilitada) {
+        this.habilitada = habilitada;
+    }
 }
