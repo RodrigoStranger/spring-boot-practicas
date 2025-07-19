@@ -10,7 +10,10 @@ public interface IEstudianteService {
     Estudiante guardar(Estudiante estudiante);
 
     // Metodo para listar todos los estudiantes
-    List<Estudiante> listar();
+    List<Estudiante> listarHabilitados();
+
+    // Metodo para listar todos los estudiantes
+    List<Estudiante> listarDeshabilitados();
 
     // Metodo para obtener un estudiante por su ID
     Estudiante obtenerPorId(Long id);
