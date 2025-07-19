@@ -73,18 +73,24 @@ public class EstudianteController {
         }
     }
 
-    @PutMapping("/{id}/estado")
+    @PatchMapping("/{id}/estado")
     public ResponseEntity<?> cambiarEstado(
             @PathVariable Long id,
-            @RequestParam boolean habilitado
+            @RequestParam(name = "estado") boolean estado
     ) {
         try {
-            estudianteService.cambiarEstado(id, habilitado);
-            String mensaje = habilitado ? "Estudiante habilitado exitosamente" : "Estudiante deshabilitado exitosamente";
+            estudianteService.cambiarEstado(id, estado);
+            String mensaje = estado ? "Estudiante habilitado exitosamente" : "Estudiante deshabilitado exitosamente";
             return ResponseWrapper.success(null, mensaje).toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
         }
+    }
+
+    public static class EstadoRequest {
+        private boolean habilitado;
+        public boolean isHabilitado() { return habilitado; }
+        public void setHabilitado(boolean habilitado) { this.habilitado = habilitado; }
     }
 
 }
