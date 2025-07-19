@@ -1,7 +1,6 @@
 package com.ulasalle.sistemadereservasdesalasdeestudiocmd.controller;
 
 
-import ch.qos.logback.classic.Logger;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.model.Estudiante;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.response.ResponseWrapper;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.IEstudianteService;
