@@ -30,5 +30,8 @@ public class Estudiante {
 
     @Column(name = "habilitado_estudiante")
     private int habilitado;
+    
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Reserva> reservas = new java.util.ArrayList<>();
 
 }

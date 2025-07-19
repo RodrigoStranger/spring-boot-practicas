@@ -29,8 +29,8 @@ public class Sala {
     public boolean getHabilitada() {
         return habilitada;
     }
+    
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Reserva> reservas = new java.util.ArrayList<>();
 
-    public void setHabilitada(boolean habilitada) {
-        this.habilitada = habilitada;
-    }
 }
