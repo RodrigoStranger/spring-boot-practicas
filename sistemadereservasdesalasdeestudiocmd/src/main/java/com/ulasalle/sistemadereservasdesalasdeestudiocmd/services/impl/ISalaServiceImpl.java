@@ -21,7 +21,6 @@ public class ISalaServiceImpl implements ISalaService {
 
     @Override
     public SalaDTO crearSala(SalaDTO salaDTO) {
-        // Validar nombre duplicado
         if (salaRepository.findByNombre(salaDTO.getNombre()).isPresent()) {
             throw new RuntimeException("Ya existe una sala con ese nombre");
         }
@@ -58,7 +57,6 @@ public class ISalaServiceImpl implements ISalaService {
     public SalaDTO actualizar(Long id, SalaDTO salaDTO) {
         Sala sala = salaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
-        // Validar nombre duplicado omitiendo el actual
         var salaExistente = salaRepository.findByNombre(salaDTO.getNombre());
         if (salaExistente.isPresent() && !salaExistente.get().getId().equals(id)) {
             throw new RuntimeException("Ya existe una sala con ese nombre");
