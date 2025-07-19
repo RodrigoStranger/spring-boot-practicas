@@ -14,5 +14,4 @@ public interface ISalaJpaRepository extends JpaRepository<Sala, Long> {
     
     List<Sala> findByHabilitada(boolean habilitada);
 
-
 }
