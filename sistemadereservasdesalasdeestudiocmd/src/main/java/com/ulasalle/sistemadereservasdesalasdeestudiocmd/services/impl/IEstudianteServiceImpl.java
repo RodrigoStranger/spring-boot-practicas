@@ -1,6 +1,7 @@
 package com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.impl;
 
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.model.Estudiante;
+import com.ulasalle.sistemadereservasdesalasdeestudiocmd.dto.EstudianteDTO;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.repository.IEstudianteJpaRepository;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.IEstudianteService;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class IEstudianteServiceImpl implements IEstudianteService {
     }
 
     @Override
-    public Estudiante guardar(Estudiante estudiante) {
+    public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO) {
+        Estudiante estudiante = dtoToEntity(estudianteDTO);
 
         Optional<Estudiante> existePorNombreApellido = repoEstudiante.findByNombreAndApellido(
                 estudiante.getNombre(),
@@ -41,28 +43,32 @@ public class IEstudianteServiceImpl implements IEstudianteService {
         }
 
         estudiante.setHabilitado(1);
-        return repoEstudiante.save(estudiante);
+        Estudiante guardado = repoEstudiante.save(estudiante);
+        return entityToDto(guardado);
     }
 
     @Override
-    public List<Estudiante> listarHabilitados() {
-        return repoEstudiante.findByHabilitado(1);
+    public List<EstudianteDTO> listarHabilitados() {
+        return repoEstudiante.findByHabilitado(1)
+            .stream().map(this::entityToDto).toList();
     }
 
     @Override
-    public List<Estudiante> listarDeshabilitados() {
-        return repoEstudiante.findByHabilitado(0);
+    public List<EstudianteDTO> listarDeshabilitados() {
+        return repoEstudiante.findByHabilitado(0)
+            .stream().map(this::entityToDto).toList();
     }
 
     @Override
-    public Estudiante obtenerPorId(Long id) {
-        return repoEstudiante.findById(id)
+    public EstudianteDTO obtenerPorId(Long id) {
+        Estudiante estudiante = repoEstudiante.findById(id)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-
+        return entityToDto(estudiante);
     }
 
     @Override
-    public Estudiante actualizar(Long id, Estudiante estudiante) {
+    public EstudianteDTO actualizar(Long id, EstudianteDTO estudianteDTO) {
+        Estudiante estudiante = dtoToEntity(estudianteDTO);
         Estudiante estudianteExistente = repoEstudiante.findById(id)
             .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
 
@@ -86,7 +92,9 @@ public class IEstudianteServiceImpl implements IEstudianteService {
         estudianteExistente.setApellido(estudiante.getApellido());
         estudianteExistente.setCorreo(estudiante.getCorreo());
         estudianteExistente.setCodigo(estudiante.getCodigo());
-        return repoEstudiante.save(estudianteExistente);
+        estudianteExistente.setHabilitado(estudiante.getHabilitado());
+        Estudiante actualizado = repoEstudiante.save(estudianteExistente);
+        return entityToDto(actualizado);
     }
 
 
@@ -100,4 +108,29 @@ public class IEstudianteServiceImpl implements IEstudianteService {
         repoEstudiante.save(estudiante);
     }
 
+    // Métodos de mapeo entre entidad y DTO
+    private EstudianteDTO entityToDto(Estudiante estudiante) {
+        if (estudiante == null) return null;
+        EstudianteDTO dto = new EstudianteDTO();
+        dto.setId(estudiante.getId());
+        dto.setCodigo(estudiante.getCodigo());
+        dto.setNombre(estudiante.getNombre());
+        dto.setApellido(estudiante.getApellido());
+        dto.setCorreo(estudiante.getCorreo());
+        dto.setHabilitado(estudiante.getHabilitado());
+        return dto;
+    }
+
+    private Estudiante dtoToEntity(EstudianteDTO dto) {
+        if (dto == null) return null;
+        Estudiante estudiante = new Estudiante();
+        estudiante.setId(dto.getId());
+        estudiante.setCodigo(dto.getCodigo());
+        estudiante.setNombre(dto.getNombre());
+        estudiante.setApellido(dto.getApellido());
+        // estudiante.setCarrera(dto.getCarrera()); // Si tienes el campo en la entidad
+        estudiante.setCorreo(dto.getCorreo());
+        estudiante.setHabilitado(dto.getHabilitado());
+        return estudiante;
+    }
 }

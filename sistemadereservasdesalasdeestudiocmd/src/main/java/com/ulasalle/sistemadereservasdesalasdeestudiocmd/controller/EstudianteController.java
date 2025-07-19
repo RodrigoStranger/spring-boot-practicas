@@ -1,7 +1,6 @@
 package com.ulasalle.sistemadereservasdesalasdeestudiocmd.controller;
 
 
-import com.ulasalle.sistemadereservasdesalasdeestudiocmd.model.Estudiante;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.dto.EstudianteDTO;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.response.ResponseWrapper;
 import com.ulasalle.sistemadereservasdesalasdeestudiocmd.services.IEstudianteService;
@@ -24,8 +23,8 @@ public class EstudianteController {
             @RequestBody EstudianteDTO estudianteDTO
     ) {
         try {
-            Estudiante guardado = estudianteService.guardar(dtoToEntity(estudianteDTO));
-            return ResponseWrapper.success(entityToDto(guardado), "Estudiante guardado exitosamente").toResponseEntity();
+            EstudianteDTO guardado = estudianteService.crearEstudiante(estudianteDTO);
+            return ResponseWrapper.success(guardado, "Estudiante guardado exitosamente").toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
         }
@@ -34,9 +33,7 @@ public class EstudianteController {
     @GetMapping("/habilitados")
     public ResponseEntity<?> listarHabilitados() {
         try {
-            var lista = estudianteService.listarHabilitados().stream()
-                .map(this::entityToDto)
-                .toList();
+            var lista = estudianteService.listarHabilitados();
             return ResponseWrapper.success(lista, "Estudiantes habilitados listados exitosamente").toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
@@ -46,9 +43,7 @@ public class EstudianteController {
     @GetMapping("/deshabilitados")
     public ResponseEntity<?> listarDeshabilitados() {
         try {
-            var lista = estudianteService.listarDeshabilitados().stream()
-                .map(this::entityToDto)
-                .toList();
+            var lista = estudianteService.listarDeshabilitados();
             return ResponseWrapper.success(lista, "Estudiantes deshabilitados listados exitosamente").toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
@@ -60,8 +55,8 @@ public class EstudianteController {
             @PathVariable Long id
     ) {
         try {
-            Estudiante estudiante = estudianteService.obtenerPorId(id);
-            return ResponseWrapper.success(entityToDto(estudiante), "Estudiante encontrado exitosamente").toResponseEntity();
+            EstudianteDTO estudiante = estudianteService.obtenerPorId(id);
+            return ResponseWrapper.success(estudiante, "Estudiante encontrado exitosamente").toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.NOT_FOUND.value()).toResponseEntity();
         }
@@ -73,8 +68,8 @@ public class EstudianteController {
             @RequestBody EstudianteDTO estudianteDTO
     ) {
         try {
-            Estudiante actualizado = estudianteService.actualizar(id, dtoToEntity(estudianteDTO));
-            return ResponseWrapper.success(entityToDto(actualizado), "Estudiante actualizado exitosamente").toResponseEntity();
+            EstudianteDTO actualizado = estudianteService.actualizar(id, estudianteDTO);
+            return ResponseWrapper.success(actualizado, "Estudiante actualizado exitosamente").toResponseEntity();
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
         }
@@ -92,30 +87,5 @@ public class EstudianteController {
         } catch (Exception e) {
             return ResponseWrapper.error(e.getMessage(), HttpStatus.BAD_REQUEST.value()).toResponseEntity();
         }
-    }
-
-    private EstudianteDTO entityToDto(Estudiante estudiante) {
-        if (estudiante == null) return null;
-        EstudianteDTO dto = new EstudianteDTO();
-        dto.setId(estudiante.getId());
-        dto.setCodigo(estudiante.getCodigo());
-        dto.setNombre(estudiante.getNombre());
-        dto.setApellido(estudiante.getApellido());
-        dto.setCorreo(estudiante.getCorreo());
-        dto.setHabilitado(estudiante.getHabilitado());
-        return dto;
-    }
-
-    private Estudiante dtoToEntity(EstudianteDTO dto) {
-        if (dto == null) return null;
-        Estudiante estudiante = new Estudiante();
-        estudiante.setId(dto.getId());
-        estudiante.setCodigo(dto.getCodigo());
-        estudiante.setNombre(dto.getNombre());
-        estudiante.setApellido(dto.getApellido());
-        // estudiante.setCarrera(dto.getCarrera()); // Si tienes el campo en la entidad
-        estudiante.setCorreo(dto.getCorreo());
-        estudiante.setHabilitado(dto.getHabilitado());
-        return estudiante;
     }
 }
