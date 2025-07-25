@@ -13,7 +13,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "t_aula", schema = "estudiantes")
+@Table(name = "aulas")
 @Setter
 @Getter
 public class Aula {
